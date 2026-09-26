@@ -1,4 +1,6 @@
 
+from pathlib import Path
+
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -73,342 +75,7 @@ PAGES = [
 # DESIGN — ONE CLEAN STYLESHEET
 # ============================================================
 
-st.markdown("""
-<style>
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap');
-
-:root {
-    --navy: #101B2C;
-    --navy-light: #1A2C42;
-    --emerald: #36B89A;
-    --emerald-light: #EAF8F3;
-    --background: #F5F7FA;
-    --text: #192B43;
-    --muted: #748398;
-    --border: #E5EAF0;
-}
-
-html, body, [class*="css"] {
-    font-family: 'DM Sans', sans-serif;
-}
-
-.stApp {
-    background: var(--background);
-    color: var(--text);
-}
-
-.block-container {
-    max-width: 1500px;
-    padding: 2rem 2.5rem 4rem;
-}
-
-.main h1, .main h2, .main h3 {
-    color: var(--text) !important;
-    letter-spacing: -0.5px;
-}
-
-.main p, .main label {
-    color: #52647B;
-}
-
-/* SIDEBAR */
-
-section[data-testid="stSidebar"] {
-    background: var(--navy) !important;
-    border-right: 1px solid #25374C;
-    width: 255px !important;
-    min-width: 255px !important;
-}
-
-section[data-testid="stSidebar"] > div {
-    background: var(--navy) !important;
-}
-
-section[data-testid="stSidebar"]
-[data-testid="stSidebarUserContent"] {
-    padding: 26px 13px !important;
-}
-
-.sidebar-brand {
-    display: flex;
-    align-items: center;
-    gap: 11px;
-    padding: 9px 8px 34px;
-}
-
-.sidebar-logo {
-    width: 42px;
-    height: 42px;
-    flex-shrink: 0;
-    background: #20433F;
-    border: 1px solid #32695E;
-    border-radius: 12px;
-    color: #82E6C5;
-    font-size: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.sidebar-name {
-    color: #FFFFFF;
-    font-size: 14px;
-    font-weight: 800;
-    line-height: 1.25;
-    letter-spacing: 0.3px;
-}
-
-.sidebar-subtitle {
-    color: #8FA4B9;
-    font-size: 9px;
-    letter-spacing: 0.6px;
-    margin-top: 5px;
-}
-
-.sidebar-label {
-    color: #788FA7;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    margin: 0 0 12px 14px;
-}
-
-/* SIDEBAR BUTTONS */
-
-section[data-testid="stSidebar"] div.stButton {
-    margin-bottom: 3px;
-}
-
-section[data-testid="stSidebar"] div.stButton > button {
-    background: transparent !important;
-    color: #B9C8D8 !important;
-    border: 0 !important;
-    border-radius: 9px !important;
-    box-shadow: none !important;
-    width: 100%;
-    min-height: 43px;
-    justify-content: flex-start !important;
-    text-align: left !important;
-    padding: 0 12px !important;
-    font-size: 12px;
-    font-weight: 500;
-}
-
-section[data-testid="stSidebar"] div.stButton > button p {
-    color: inherit !important;
-    font-size: 12px !important;
-}
-
-section[data-testid="stSidebar"] div.stButton > button:hover {
-    background: #1A2E43 !important;
-    color: white !important;
-}
-
-section[data-testid="stSidebar"]
-div.stButton > button[kind="primary"] {
-    background: #1B4140 !important;
-    color: #FFFFFF !important;
-    border-left: 3px solid #72D9B0 !important;
-    font-weight: 700;
-}
-
-/* SIDEBAR PROGRESS */
-
-.sidebar-progress {
-    background: #1A2C42;
-    border: 1px solid #2C4056;
-    border-radius: 13px;
-    padding: 17px;
-    margin-top: 27px;
-}
-
-.sidebar-progress-title {
-    color: #C8D7E5;
-    font-size: 12px;
-    font-weight: 600;
-}
-
-.sidebar-progress-value {
-    color: #FFFFFF;
-    font-size: 28px;
-    font-weight: 800;
-    margin: 10px 0;
-}
-
-.sidebar-progress-track {
-    background: #34495E;
-    height: 5px;
-    border-radius: 20px;
-    overflow: hidden;
-}
-
-.sidebar-progress-fill {
-    height: 5px;
-    background: #72D9B0;
-    border-radius: 20px;
-}
-
-.sidebar-progress-caption {
-    color: #8FA4B9;
-    font-size: 10px;
-    margin-top: 11px;
-}
-
-/* MAIN HEADER */
-
-.page-eyebrow {
-    color: #8390A2;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    margin-bottom: 7px;
-}
-
-.page-title {
-    color: #192B43;
-    font-size: 34px;
-    font-weight: 800;
-    letter-spacing: -1px;
-    margin-bottom: 5px;
-}
-
-.page-subtitle {
-    color: #748398;
-    font-size: 14px;
-    margin-bottom: 27px;
-}
-
-/* METRICS */
-
-div[data-testid="stMetric"] {
-    background: #FFFFFF !important;
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 19px 21px;
-    box-shadow: 0 3px 14px rgba(20,40,65,0.025);
-}
-
-div[data-testid="stMetricLabel"],
-div[data-testid="stMetricLabel"] *,
-div[data-testid="stMetric"] label {
-    color: #748398 !important;
-    opacity: 1 !important;
-    font-size: 12px !important;
-    font-weight: 600 !important;
-}
-
-div[data-testid="stMetricValue"],
-div[data-testid="stMetricValue"] * {
-    color: #192B43 !important;
-    opacity: 1 !important;
-    font-size: 30px !important;
-    font-weight: 800 !important;
-}
-
-/* SECTION TITLES */
-
-.section-title {
-    color: #192B43;
-    font-size: 19px;
-    font-weight: 800;
-    margin: 28px 0 15px;
-}
-
-/* RISK PORTFOLIO */
-
-.portfolio {
-    background: #FFFFFF;
-    border: 1px solid var(--border);
-    border-radius: 15px;
-    padding: 9px 22px;
-}
-
-.portfolio-row {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 15px 0;
-    border-bottom: 1px solid #EEF1F5;
-}
-
-.portfolio-row:last-child {
-    border-bottom: none;
-}
-
-.portfolio-icon {
-    width: 35px;
-    height: 35px;
-    flex-shrink: 0;
-    border-radius: 10px;
-    background: #EAF8F3;
-    color: #15856E;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-}
-
-.portfolio-text {
-    flex: 1;
-}
-
-.portfolio-name {
-    color: #26374D;
-    font-size: 13px;
-    font-weight: 700;
-}
-
-.portfolio-description {
-    color: #8290A2;
-    font-size: 11px;
-    margin-top: 3px;
-}
-
-.portfolio-status {
-    background: #F0F3F7;
-    color: #7A8799;
-    font-size: 10px;
-    border-radius: 20px;
-    padding: 6px 11px;
-}
-
-.portfolio-status.complete {
-    background: #E7F7F0;
-    color: #16856C;
-}
-
-/* MAIN BUTTONS */
-
-.main .stButton > button[kind="primary"] {
-    background: #168B77 !important;
-    border: none !important;
-    color: #FFFFFF !important;
-    border-radius: 9px !important;
-    font-weight: 700;
-}
-
-.main .stButton > button[kind="primary"]:hover {
-    background: #0C6F5E !important;
-}
-
-/* TABS AND TABLES */
-
-div[data-testid="stDataFrame"] {
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-}
-
-.stTabs [data-baseweb="tab-highlight"] {
-    background: #168B77;
-}
-
-.stTabs [aria-selected="true"] {
-    color: #168B77 !important;
-}
-
-</style>
-""", unsafe_allow_html=True)
+st.markdown("<style>" + (Path(__file__).parent / "styles.css").read_text(encoding="utf-8") + "</style>", unsafe_allow_html=True)
 
 
 # ============================================================
@@ -512,18 +179,19 @@ with st.sidebar:
     )
 
     NAVIGATION = [
-        ("▦", "Overview"),
-        ("◫", "Risk Assessment"),
-        ("☷", "Criteria Weighting"),
-        ("▥", "Risk Ranking"),
-        ("◈", "Comparison & Sensitivity")
+        ("dashboard", "Overview", "Overview"),
+        ("fact_check", "Risk Assessment", "Risk Assessment"),
+        ("tune", "Criteria Weighting", "Criteria Weighting"),
+        ("leaderboard", "Risk Ranking", "Risk Ranking"),
+        ("compare_arrows", "Comparison & Sensitivity", "Comparison")
     ]
 
-    for symbol, destination in NAVIGATION:
+    for icon, destination, label in NAVIGATION:
         active = st.session_state.page == destination
-
         if st.button(
-            f"{symbol}   {destination}",
+            label,
+            icon=f":material/{icon}:",
+            help="Compare methods and explore sensitivity" if destination == "Comparison & Sensitivity" else None,
             key=f"navigation_{destination}",
             type="primary" if active else "secondary",
             use_container_width=True
@@ -536,9 +204,9 @@ with st.sidebar:
 
     progress_html = (
         '<div class="sidebar-progress">'
-        '<div class="sidebar-progress-title">'
+        '<div class="sidebar-progress-heading"><div class="sidebar-progress-title">'
         'Assessment progress</div>'
-        f'<div class="sidebar-progress-value">{percentage}%</div>'
+        f'<div class="sidebar-progress-value">{percentage}%</div></div>'
         '<div class="sidebar-progress-track">'
         f'<div class="sidebar-progress-fill" '
         f'style="width:{percentage}%"></div>'
@@ -553,7 +221,11 @@ with st.sidebar:
         unsafe_allow_html=True
     )
 
-    st.caption("MCDM Research Project")
+    st.markdown(
+        '<div class="sidebar-footer"><span class="footer-mark">RI</span>'
+        '<div>Risk Intelligence<small>MCDM Research Project</small></div></div>',
+        unsafe_allow_html=True
+    )
 
 
 page = st.session_state.page
@@ -580,83 +252,85 @@ if page == "Overview":
     c3.metric("MCDM methods", "09")
     c4.metric("Completion", f"{completed * 5}%")
 
-    st.markdown(
-        '<div class="section-title">Risk portfolio</div>',
-        unsafe_allow_html=True
-    )
+    ready = completed == df.size
+    assessed_count = int(df.notna().all(axis=1).sum())
+    portfolio_col, guide_col = st.columns([2.1, 1], gap="large")
 
-    descriptions = [
-        "Potential losses caused by counterparty default.",
-        "Exposure to market price movements.",
-        "Difficulty meeting payment obligations.",
-        "Process, people or system failures.",
-        "Cyberattacks and security incidents."
+    icon_paths = [
+        '<path d="m3 9 9-6 9 6M4 10h16M6 10v8m6-8v8m6-8v8M3 21h18"/>',
+        '<path d="m3 17 6-6 4 4 8-10m-6 0h6v6"/>',
+        '<rect x="3" y="6" width="18" height="15" rx="3"/><path d="M3 9V5a2 2 0 0 1 2-2h13m-2 10h5m-4 3h1"/>',
+        '<path d="M4 21V9l5 3V7l6 3V3h5v18ZM8 17h1m4 0h1m3 0h1"/>',
+        '<path d="m12 3 8 3v6c0 5-8 9-8 9s-8-4-8-9V6Z"/><path d="m8 12 3 3 5-6"/>'
     ]
-
-    symbols = ["◈", "↗", "◉", "⚙", "◇"]
-
     rows = []
-
     for i, risk in enumerate(RISKS):
-
-        assessed = bool(df.loc[risk].notna().all())
-
-        status = "Assessed" if assessed else "Pending"
-        status_class = "complete" if assessed else ""
-
+        entered = int(df.loc[risk].notna().sum())
+        status = "Assessed" if entered == 4 else ("In progress" if entered else "Not assessed")
+        status_class = "complete" if entered == 4 else ("partial" if entered else "")
+        icon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + icon_paths[i] + '</svg>'
         rows.append(
-            '<div class="portfolio-row">'
-            f'<div class="portfolio-icon">{symbols[i]}</div>'
+            f'<div class="portfolio-row tone-{i}">'
+            f'<div class="portfolio-icon">{icon}</div>'
             '<div class="portfolio-text">'
             f'<div class="portfolio-name">{risk}</div>'
-            '<div class="portfolio-description">'
-            f'{descriptions[i]}'
+            f'<div class="portfolio-description">{RISK_INFO[risk][1]}</div>'
+            '</div><div class="risk-state">'
+            f'<span class="portfolio-status {status_class}">{status}</span>'
+            f'<span class="score-count">{entered} / 4 criteria</span>'
             '</div></div>'
-            f'<div class="portfolio-status {status_class}">'
-            f'{status}</div>'
-            '</div>'
         )
+    with portfolio_col:
+        st.markdown(
+            '<div class="section-heading"><h2>Risk portfolio</h2>'
+            f'<span>{assessed_count} of 5 assessed</span></div>'
+            '<div class="portfolio">' + ''.join(rows) + '</div>',
+            unsafe_allow_html=True
+        )
+    with guide_col:
+        st.markdown('<div class="section-heading"><h2>Your next step</h2><span>WORKFLOW</span></div>', unsafe_allow_html=True)
+        with st.container(border=True):
+            pct = int(completed / df.size * 100)
+            st.markdown(
+                '<div class="guide-kicker">ASSESSMENT READINESS</div>'
+                f'<div class="readiness"><div class="progress-ring" style="--progress:{pct}%">'
+                f'<div>{pct}<small>%</small></div></div>'
+                f'<div><strong>{completed} of 20</strong><span>scores completed</span></div></div>'
+                '<div class="guide-title">'
+                + ('Ready to set your priorities' if ready else 'Build your risk profile')
+                + '</div><div class="guide-copy">'
+                + ('Your scores are saved. Define how much each criterion matters before ranking.' if ready
+                   else 'Evaluate each risk across four criteria to begin your analysis.')
+                + '</div>', unsafe_allow_html=True
+            )
+            if st.button(
+                "Set criteria weights" if ready else ("Continue assessment" if completed else "Start risk assessment"),
+                key="overview_next_step", type="primary", use_container_width=True
+            ):
+                st.session_state.page = "Criteria Weighting" if ready else "Risk Assessment"
+                st.rerun()
+            st.markdown(
+                '<div class="workflow-steps">'
+                '<div class="step active"><b>01</b><span>Assess risks<small>Score your five risk categories</small></span></div>'
+                '<div class="step"><b>02</b><span>Weight criteria<small>Define relative importance</small></span></div>'
+                '<div class="step"><b>03</b><span>Compare rankings<small>Explore methods and sensitivity</small></span></div>'
+                '</div>', unsafe_allow_html=True
+            )
 
-    st.markdown(
-        '<div class="portfolio">'
-        + "".join(rows)
-        + '</div>',
-        unsafe_allow_html=True
-    )
-
-    st.markdown(
-        '<div class="section-title">Evaluation framework</div>',
-        unsafe_allow_html=True
-    )
-
-    
-    st.markdown(
-        '<div class="section-title">Evaluation framework</div>',
-        unsafe_allow_html=True
-    )
-
-    framework = pd.DataFrame({
-        "Criterion": [
-            "Probability",
-            "Financial impact",
-            "Detection difficulty",
-            "Recovery time"
-        ],
-        "Scale": ["1–9"] * 4,
-        "Score of 9 means": [
-            "Very high probability of occurrence",
-            "Very severe potential financial loss",
-            "Extremely difficult to detect",
-            "Extremely long recovery time"
-        ],
-        "Direction": ["Maximize"] * 4
-    })
-
-    st.dataframe(
-        framework,
-        hide_index=True,
-        use_container_width=True
-    )
+    with st.expander("Evaluation framework | Scoring guide", expanded=False):
+        st.caption("Score each criterion from 1 to 9. Higher scores indicate greater risk priority.")
+        framework = pd.DataFrame({
+            "Criterion": CRITERIA,
+            "Scale": ["1-9"] * 4,
+            "Score of 9 means": [
+                "Very high probability of occurrence",
+                "Very severe potential financial loss",
+                "Extremely difficult to detect",
+                "Extremely long recovery time"
+            ],
+            "Direction": ["Maximize"] * 4
+        })
+        st.dataframe(framework, hide_index=True, use_container_width=True)
 
 
 # ============================================================
@@ -671,7 +345,7 @@ elif page == "Risk Assessment":
     )
 
     st.info(
-        "Enter a score from 1 to 10. "
+        "Enter a score from 1 to 9. "
         "A higher value indicates greater risk priority."
     )
 
