@@ -1,21 +1,14 @@
 
 from pathlib import Path
-
 import streamlit as st
 import pandas as pd
 import numpy as np
 import plotly.express as px
-
 from scipy.stats import spearmanr
-
 from mcdm_methods import (
     ahp, bwm, entropy, critic, ranking_table
 )
 
-
-# ============================================================
-# CONFIGURATION
-# ============================================================
 
 st.set_page_config(
     page_title="Risk Intelligence",
@@ -71,16 +64,8 @@ PAGES = [
 ]
 
 
-# ============================================================
-# DESIGN — ONE CLEAN STYLESHEET
-# ============================================================
-
 st.markdown("<style>" + (Path(__file__).parent / "styles.css").read_text(encoding="utf-8") + "</style>", unsafe_allow_html=True)
 
-
-# ============================================================
-# SESSION STATE
-# ============================================================
 
 if "matrix" not in st.session_state:
     st.session_state.matrix = pd.DataFrame(
@@ -154,9 +139,6 @@ def header(title, subtitle):
     )
 
 
-# ============================================================
-# SIDEBAR
-# ============================================================
 
 with st.sidebar:
 
@@ -231,9 +213,6 @@ with st.sidebar:
 page = st.session_state.page
 
 
-# ============================================================
-# OVERVIEW
-# ============================================================
 
 if page == "Overview":
 
@@ -333,9 +312,6 @@ if page == "Overview":
         st.dataframe(framework, hide_index=True, use_container_width=True)
 
 
-# ============================================================
-# RISK ASSESSMENT
-# ============================================================
 
 elif page == "Risk Assessment":
 
@@ -393,9 +369,6 @@ elif page == "Risk Assessment":
     )
 
 
-# ============================================================
-# CRITERIA WEIGHTING
-# ============================================================
 
 elif page == "Criteria Weighting":
 
@@ -411,6 +384,7 @@ elif page == "Criteria Weighting":
 
     weights = None
     detail = None
+
 
     if method == "AHP":
 
@@ -438,14 +412,21 @@ elif page == "Criteria Weighting":
 
                 intensity = c2.slider(
                     "Intensity",
-                    1, 9, 1,
+                    min_value=1,
+                    max_value=9,
+                    value=1,
+                    disabled=(preference == "Equal importance"),
                     key=f"intensity_{i}_{j}"
                 )
 
                 if preference == CRITERIA[i]:
                     pairwise[i, j] = intensity
+
                 elif preference == CRITERIA[j]:
                     pairwise[i, j] = 1 / intensity
+
+                else:
+                    pairwise[i, j] = 1
 
                 pairwise[j, i] = 1 / pairwise[i, j]
 
@@ -459,6 +440,7 @@ elif page == "Criteria Weighting":
             )
 
         if st.button("Calculate AHP", type="primary"):
+
             weights, detail = ahp(pairwise)
 
             if detail >= 0.1:
@@ -469,6 +451,7 @@ elif page == "Criteria Weighting":
             else:
                 save_weights("AHP", weights)
                 st.success(f"AHP saved. CR = {detail:.3f}")
+
 
     elif method == "BWM":
 
