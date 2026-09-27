@@ -4,7 +4,6 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import plotly.express as px
-from scipy.stats import spearmanr
 from mcdm_methods import (
     ahp, bwm, entropy, critic, ranking_table
 )
@@ -771,13 +770,6 @@ elif page == "Comparison & Sensitivity":
             hide_index=True,
             use_container_width=True
         )
-
-        rho = spearmanr(
-            sensitivity["Original rank"],
-            sensitivity["Adjusted rank"]
-        ).statistic
-
-        st.metric("Spearman correlation", f"{rho:.3f}")
 
         st.download_button(
             "Export comparison",
