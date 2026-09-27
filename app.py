@@ -566,10 +566,7 @@ elif page == "Criteria Weighting":
 
         st.plotly_chart(fig, use_container_width=True)
 
-
-# ============================================================
-# RISK RANKING
-# ============================================================
+###3RISK RANKING 
 
 elif page == "Risk Ranking":
 
@@ -653,9 +650,7 @@ elif page == "Risk Ranking":
         st.warning(str(error))
 
 
-# ============================================================
-# COMPARISON & SENSITIVITY
-# ============================================================
+## COMPARAISON ET SENSTIVIT2 
 
 elif page == "Comparison & Sensitivity":
 
@@ -708,13 +703,6 @@ elif page == "Comparison & Sensitivity":
         )
 
         st.plotly_chart(fig, use_container_width=True)
-
-        st.subheader("Spearman correlations")
-
-        st.dataframe(
-            comparison.corr(method="spearman").round(3),
-            use_container_width=True
-        )
 
         st.subheader("Sensitivity analysis")
 
