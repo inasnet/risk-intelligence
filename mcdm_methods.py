@@ -98,7 +98,6 @@ def entropy(matrix):
 
 
 def critic(matrix):
-    """CRITIC using absolute correlations."""
     x = np.asarray(matrix, dtype=float)
     spread = np.ptp(x, axis=0)
 

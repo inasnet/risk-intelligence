@@ -221,6 +221,25 @@ if page == "Overview":
         "Financial risk assessment and prioritization"
     )
 
+    st.markdown(
+        '<section class="app-purpose" aria-labelledby="app-purpose-title">'
+        '<div class="purpose-label">ABOUT THIS APPLICATION</div>'
+        '<h2 id="app-purpose-title">Understand your risks. Prioritize your actions.</h2>'
+        '<p>Risk Intelligence is a multi-criteria decision support application '
+        'for evaluating and prioritizing financial risks. It helps you assess '
+        'credit, market, liquidity, operational and cybersecurity risks using '
+        'probability, financial impact, detection difficulty and recovery time.</p>'
+        '<p><strong>Our objective:</strong> Help you identify which risks need '
+        'attention first by combining your scores with criteria weights, '
+        'comparing ranking methods and exploring how changes in weights '
+        'affect your priorities.</p>'
+        '<div class="purpose-outcomes">'
+        '<span>Evaluate risks</span><span>Compare priorities</span>'
+        '<span>Explore sensitivity</span></div>'
+        '</section>',
+        unsafe_allow_html=True
+    )
+
     df = current_matrix()
     completed = int(df.notna().sum().sum())
 

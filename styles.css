@@ -96,3 +96,13 @@ button:focus-visible { outline:3px solid #6CCFAE !important; outline-offset:3px;
     .portfolio-text { min-width:140px; }
     .portfolio-row { min-height:84px; }
 }
+
+/* Application purpose on the overview page. */
+.app-purpose { background:linear-gradient(115deg,#EDF7F3,#FFFFFF); border:1px solid #D9E9E2; border-left:4px solid #16836C; border-radius:14px; padding:22px 24px; margin:0 0 6px; }
+.purpose-label { color:#34725F; font-size:9px; font-weight:750; letter-spacing:1.6px; margin-bottom:8px; }
+.app-purpose h2 { color:var(--ink); font-size:21px; font-weight:700; letter-spacing:-.5px; padding:0; margin:0 0 10px; line-height:1.35; }
+.app-purpose p { color:#53697B; font-size:13px; line-height:1.75; margin:0 0 10px; max-width:1000px; }
+.app-purpose strong { color:var(--ink); }
+.purpose-outcomes { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+.purpose-outcomes span { color:#236B55; background:#E2F1E9; border-radius:6px; padding:5px 10px; font-size:10px; font-weight:600; }
+@media(max-width:760px) { .app-purpose { padding:18px; } .app-purpose h2 { font-size:19px; } }
