@@ -579,7 +579,7 @@ elif page == "Criteria Weighting":
             weight_df,
             x="Criterion",
             y="Weight",
-            color_discrete_sequence=["#168B77"]
+            color_discrete_sequence=["#6D28D9"]
         )
 
         st.plotly_chart(fig, use_container_width=True)
@@ -637,7 +637,7 @@ elif page == "Risk Ranking":
             x="Score",
             y="Risk",
             orientation="h",
-            color_discrete_sequence=["#168B77"],
+            color_discrete_sequence=["#6D28D9"],
             text="Rank"
         )
 
@@ -717,7 +717,7 @@ elif page == "Comparison & Sensitivity":
             comparison,
             text_auto=True,
             aspect="auto",
-            color_continuous_scale="Tealgrn"
+            color_continuous_scale=["#F3E8FF", "#D8B4FE", "#A855F7", "#7C3AED", "#4C1D95"]
         )
 
         st.plotly_chart(fig, use_container_width=True)
