@@ -133,7 +133,7 @@ def critic(matrix):
     return information / information.sum(), correlation
 
 
-def ranking(matrix, weights, method, lam=0.5, v=0.5):
+def ranking(matrix, weights, method, lam=0.5):
     """
     All criteria are benefit-oriented for risk priority:
     a higher input score means a higher intervention priority.
@@ -177,43 +177,12 @@ def ranking(matrix, weights, method, lam=0.5, v=0.5):
             "Anti-ideal distance": d_minus
         }
 
-    if method == "VIKOR":
-        best = x.max(axis=0)
-        worst = x.min(axis=0)
-
-        gap = np.divide(
-            best - x,
-            best - worst,
-            out=np.zeros_like(x),
-            where=(best - worst) > 0
-        ) * w
-
-        s = gap.sum(axis=1)
-        r = gap.max(axis=1)
-
-        s_range = np.ptp(s)
-        r_range = np.ptp(r)
-
-        s_norm = (
-            (s - s.min()) / s_range
-            if s_range > 0 else np.zeros_like(s)
-        )
-
-        r_norm = (
-            (r - r.min()) / r_range
-            if r_range > 0 else np.zeros_like(r)
-        )
-
-        q = v * s_norm + (1 - v) * r_norm
-
-        return q, True, {"S": s, "R": r}
-
     raise ValueError(f"Unknown ranking method: {method}")
 
 
-def ranking_table(matrix, weights, method, risks, lam=0.5, v=0.5):
+def ranking_table(matrix, weights, method, risks, lam=0.5):
     scores, ascending, details = ranking(
-        matrix, weights, method, lam, v
+        matrix, weights, method, lam
     )
 
     result = pd.DataFrame({

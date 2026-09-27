@@ -249,7 +249,7 @@ if page == "Overview":
 
     c1.metric("Total risks", "05")
     c2.metric("Criteria", "04")
-    c3.metric("MCDM methods", "09")
+    c3.metric("MCDM methods", "08")
     c4.metric("Completion", f"{completed * 5}%")
 
     ready = completed == df.size
@@ -611,20 +611,16 @@ elif page == "Risk Ranking":
 
         method = st.selectbox(
             "Ranking method",
-            ["WSM", "WPM", "WASPAS", "TOPSIS", "VIKOR"]
+            ["WSM", "WPM", "WASPAS", "TOPSIS"]
         )
 
         lam = 0.5
-        v = 0.5
 
         if method == "WASPAS":
             lam = st.slider("WASPAS λ", 0.0, 1.0, 0.5)
 
-        if method == "VIKOR":
-            v = st.slider("VIKOR v", 0.0, 1.0, 0.5)
-
         result = ranking_table(
-            x, weights, method, RISKS, lam, v
+            x, weights, method, RISKS, lam
         )
 
         st.markdown(
@@ -660,29 +656,8 @@ elif page == "Risk Ranking":
 
         st.caption(
             "Rank 1 represents the highest modeled "
-            "intervention priority. For VIKOR, lower Q "
-            "values receive earlier positions."
+            "intervention priority."
         )
-
-        if method == "VIKOR":
-            ordered = result.sort_values("Score")
-            advantage = (
-                ordered["Score"].iloc[1]
-                - ordered["Score"].iloc[0]
-                >= 1 / (len(RISKS) - 1)
-            )
-
-            first = ordered["Risk"].iloc[0]
-            stable = first in (
-                result.loc[result["S"].idxmin(), "Risk"],
-                result.loc[result["R"].idxmin(), "Risk"]
-            )
-
-            st.info(
-                f"VIKOR compromise conditions — "
-                f"acceptable advantage: {advantage}; "
-                f"acceptable stability: {stable}."
-            )
 
         st.download_button(
             "Export ranking",
@@ -720,7 +695,7 @@ elif page == "Comparison & Sensitivity":
 
         weights = get_weights(weighting)
 
-        methods = ["WSM", "WPM", "WASPAS", "TOPSIS", "VIKOR"]
+        methods = ["WSM", "WPM", "WASPAS", "TOPSIS"]
 
         ranks = {}
 
